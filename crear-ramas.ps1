@@ -1,17 +1,13 @@
-# Script para crear las 9 ramas de equipo
+# Script para crear las ramas del equipo (5 integrantes)
 # Ejecutar: .\crear-ramas.ps1
 
 $ramaBase = "dev"
 $integrantes = @(
-    "integrante-1",
-    "integrante-2",
-    "integrante-3",
-    "integrante-4",
-    "integrante-5",
-    "integrante-6",
-    "integrante-7",
-    "integrante-8",
-    "integrante-9"
+    "jhonatan-mariaca",
+    "carolina-nicholls",
+    "eduar-ruiz-gomez",
+    "edwin-guzman",
+    "juliana-chantre-astudillo"
 )
 
 Write-Host "Creando ramas desde dev..."
@@ -27,5 +23,4 @@ foreach ($nombre in $integrantes) {
     git checkout dev 2>$null | Out-Null
 }
 
-Write-Host "`nListo. Cada integrante debe renombrar su rama a: dev-nombre-apellido"
-Write-Host "Ejemplo: dev-ana-garcia, dev-carlos-rodriguez"
+Write-Host "`nListo. Ramas creadas para: Jhonatan Mariaca, Carolina Nicholls, Eduar Ruiz Gomez, Edwin Guzman, Juliana Chantre Astudillo"

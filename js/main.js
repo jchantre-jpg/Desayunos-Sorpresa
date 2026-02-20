@@ -3,16 +3,32 @@
  * Compra por WhatsApp sin pasarela de pagos
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+let PRODUCTOS_ACTUAL = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
   Cart.init();
   renderCategories();
-  renderProducts();
+  await loadProducts();
   renderFilterButtons();
   bindNav();
   bindWhatsApp();
   bindProductModal();
   bindMenuToggle();
 });
+
+async function loadProducts() {
+  if (typeof USE_FIREBASE !== 'undefined' && USE_FIREBASE && initFirebase()) {
+    try {
+      PRODUCTOS_ACTUAL = await getProducts();
+    } catch (e) {
+      console.warn('Error cargando desde Firebase, usando productos estáticos:', e);
+      PRODUCTOS_ACTUAL = PRODUCTOS.map((p, i) => ({ ...p, id: p.id || i + 1 }));
+    }
+  } else {
+    PRODUCTOS_ACTUAL = PRODUCTOS.map((p, i) => ({ ...p, id: p.id || i + 1 }));
+  }
+  renderProducts();
+}
 
 // Categorías
 function renderCategories() {
@@ -57,15 +73,23 @@ function renderFilterButtons() {
 function renderProducts(filter = 'todos') {
   const grid = document.getElementById('products-grid');
   if (!grid) return;
-  const list = filter === 'todos' ? PRODUCTOS : PRODUCTOS.filter(p => p.categoria === filter);
+  const list = filter === 'todos' ? PRODUCTOS_ACTUAL : PRODUCTOS_ACTUAL.filter(p => p.categoria === filter);
+
+  const getProductImg = (p) => {
+    const fallback = (p.emoji || '🎁').replace(/"/g, '&quot;');
+    if (p.fotos && p.fotos.length > 0) {
+      return `<img src="${p.fotos[0]}" alt="${p.nombre}" data-fallback="${fallback}" onerror="this.outerHTML='<span class=img-fallback>'+this.dataset.fallback+'</span>'">`;
+    }
+    return fallback;
+  };
 
   grid.innerHTML = list.map(p => `
     <article class="product-card" data-id="${p.id}">
-      <div class="product-image">${p.emoji || '🎁'}</div>
+      <div class="product-image ${p.fotos && p.fotos.length ? 'has-img' : ''}">${getProductImg(p)}</div>
       <div class="product-info">
         <h3>${p.nombre}</h3>
         <span class="category">${CATEGORIAS.find(c => c.id === p.categoria)?.nombre || p.categoria}</span>
-        <p class="price">$${p.precio.toLocaleString('es-CO')}</p>
+        <p class="price">$${(p.precio || 0).toLocaleString('es-CO')}</p>
         <div class="product-actions">
           <button class="btn btn-outline add-cart" data-id="${p.id}">Agregar</button>
           <button class="btn btn-primary view-detail" data-id="${p.id}">Ver más</button>
@@ -77,7 +101,8 @@ function renderProducts(filter = 'todos') {
   grid.querySelectorAll('.add-cart').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      const prod = PRODUCTOS.find(p => p.id === parseInt(btn.dataset.id));
+      const id = btn.dataset.id;
+      const prod = PRODUCTOS_ACTUAL.find(p => String(p.id) === String(id));
       if (prod) Cart.add(prod);
       document.getElementById('cart-btn')?.click();
     });
@@ -87,7 +112,7 @@ function renderProducts(filter = 'todos') {
     el.addEventListener('click', e => {
       if (e.target.closest('.add-cart')) return;
       const card = e.target.closest('.product-card');
-      if (card) openProductModal(parseInt(card.dataset.id));
+      if (card) openProductModal(card.dataset.id);
     });
   });
 }
@@ -115,20 +140,26 @@ function bindProductModal() {
 }
 
 function openProductModal(id) {
-  const p = PRODUCTOS.find(pr => pr.id === id);
+  const p = PRODUCTOS_ACTUAL.find(pr => String(pr.id) === String(id));
   if (!p) return;
   const cat = CATEGORIAS.find(c => c.id === p.categoria);
   const content = document.getElementById('modal-content');
   const modal = document.getElementById('product-modal');
   const overlay = document.getElementById('product-modal-overlay');
 
+  const imgContent = p.fotos && p.fotos.length > 0
+    ? `<div class="modal-gallery"><img src="${p.fotos[0]}" alt="${p.nombre}">${p.fotos.length > 1 ? `<span class="gallery-count">+${p.fotos.length - 1}</span>` : ''}</div>`
+    : `<div class="modal-product-image">${p.emoji || '🎁'}</div>`;
+
+  const fullDesc = [p.contenido, p.descripcion].filter(Boolean).join('\n\n');
+
   content.innerHTML = `
-    <div class="modal-product-image">${p.emoji || '🎁'}</div>
+    ${imgContent}
     <div class="modal-product-info">
       <h2>${p.nombre}</h2>
-      <span class="modal-price">$${p.precio.toLocaleString('es-CO')}</span>
+      <span class="modal-price">$${(p.precio || 0).toLocaleString('es-CO')}</span>
       <p class="category">${cat?.nombre || p.categoria}</p>
-      <p>${p.descripcion}</p>
+      <div class="modal-desc">${fullDesc ? fullDesc.replace(/\n/g, '<br>') : ''}</div>
       <button class="btn btn-whatsapp btn-block add-from-modal" data-id="${p.id}">
         <svg viewBox="0 0 32 32" width="20" height="20"><path fill="currentColor" d="M16 0C7.164 0 0 7.164 0 16c0 2.82.738 5.5 2.028 7.825L.472 30.852l7.225-1.898A15.9 15.9 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0z"/></svg>
         Agregar al carrito
@@ -149,7 +180,9 @@ function openProductModal(id) {
 
 // WhatsApp
 function buildWhatsAppUrl(items, isOrder = false) {
-  const num = CONFIG.whatsappNumber.replace(/\D/g, '');
+  const link = CONFIG.whatsappLink || '';
+  const num = (CONFIG.whatsappNumber || '').replace(/\D/g, '');
+
   let text = '';
   if (items && items.length > 0) {
     text = CONFIG.orderMessage + '\n\n*Mi pedido:*\n';
@@ -158,9 +191,19 @@ function buildWhatsAppUrl(items, isOrder = false) {
     });
     text += `\n*Total: $${Cart.getTotal().toLocaleString('es-CO')}*`;
   } else {
-    text = encodeURIComponent('¡Hola! Me gustaría información sobre los productos de RegaloMágico.');
+    text = '¡Hola! Me gustaría información sobre los productos de RegaloMágico.';
   }
-  return `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
+
+  // Si hay número, usar wa.me/numero para mensaje pre-llenado
+  if (num) {
+    return `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
+  }
+  // Si hay link (ej. wa.me/qr/...), intentar añadir el mensaje como parámetro
+  if (link) {
+    const sep = link.includes('?') ? '&' : '?';
+    return `${link}${sep}text=${encodeURIComponent(text)}`;
+  }
+  return 'https://wa.me/';
 }
 
 function bindWhatsApp() {
