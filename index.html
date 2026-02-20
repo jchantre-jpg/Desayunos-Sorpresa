@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Asistencia - Electiva 5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <h1>Registro de Asistencia</h1>
+        <p class="subtitle">Electiva 5 - Control de Asistencia</p>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="controls">
+        <div class="control-group">
+          <label for="fecha">Fecha</label>
+          <input type="date" id="fecha" required>
+        </div>
+        <div class="control-group">
+          <label for="clase">Clase / Sesión</label>
+          <input type="text" id="clase" placeholder="Ej: Sesión 1 - Introducción">
+        </div>
+        <div class="control-group">
+          <label for="buscar">Buscar estudiante</label>
+          <input type="text" id="buscar" placeholder="Nombre o documento...">
+        </div>
+      </section>
+
+      <section class="acciones">
+        <button type="button" id="btn-guardar" class="btn btn-primary">Guardar Asistencia</button>
+        <button type="button" id="btn-exportar" class="btn btn-secondary">Exportar CSV</button>
+        <button type="button" id="btn-agregar" class="btn btn-success">+ Agregar Estudiante</button>
+        <button type="button" id="btn-estadisticas" class="btn btn-info">Ver Estadísticas</button>
+      </section>
+
+      <section class="estudiantes">
+        <h2>Lista de Estudiantes</h2>
+        <div class="tabla-container">
+          <table class="tabla-asistencia">
+            <thead>
+              <tr>
+                <th>Documento</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Asistencia</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-body">
+              <!-- Se llena dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Registro de Asistencia - Electiva 5 &copy; 2025</p>
+    </footer>
+  </div>
+
+  <!-- Modal Agregar/Editar Estudiante -->
+  <div id="modal-estudiante" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2 id="modal-titulo">Agregar Estudiante</h2>
+      <form id="form-estudiante">
+        <input type="hidden" id="estudiante-id">
+        <div class="form-group">
+          <label for="documento">Documento</label>
+          <input type="text" id="documento" required placeholder="Cédula o ID">
+        </div>
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" required placeholder="Nombre y apellidos">
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" placeholder="correo@ejemplo.com">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Estadísticas -->
+  <div id="modal-estadisticas" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>Estadísticas de Asistencia</h2>
+      <div id="estadisticas-contenido" class="estadisticas-grid">
+        <!-- Se llena dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
