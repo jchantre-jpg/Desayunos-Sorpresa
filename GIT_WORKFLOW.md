@@ -15,17 +15,15 @@ Cada miembro del equipo usa su rama siguiendo el estándar:
 dev-nombre-apellido
 ```
 
-**Ejemplos para 9 integrantes:**
+**Ramas del equipo (5 integrantes):**
 
-1. `dev-ana-garcia`
-2. `dev-carlos-rodriguez`
-3. `dev-maria-lopez`
-4. `dev-juan-martinez`
-5. `dev-laura-fernandez`
-6. `dev-pedro-sanchez`
-7. `dev-sofia-torres`
-8. `dev-diego-ramirez`
-9. `dev-valentina-moreno`
+| Integrante | Rama | GitHub |
+|------------|------|--------|
+| Jhonatan Mariaca | `dev-jhonatan-mariaca` | [@JhonattanMA](https://github.com/JhonattanMA) |
+| Carolina Nicholls | `dev-carolina-nicholls` | [@CarolinaNicholls](https://github.com/CarolinaNicholls) |
+| Eduar Ruiz Gomez | `dev-eduar-ruiz-gomez` | [@ruizeduar8](https://github.com/ruizeduar8) |
+| Edwin Guzman | `dev-edwin-guzman` | [@edwinGuzman12](https://github.com/edwinGuzman12) |
+| Juliana Chantre Astudillo | `dev-juliana-chantre-astudillo` | [@julianaastudillo08](https://github.com/julianaastudillo08) |
 
 ---
 
@@ -102,12 +100,18 @@ Ejemplo: `feat: agregar modal de detalle de producto`
 
 ## Conectar con GitHub
 
-1. Crear repositorio en GitHub ( vacío, sin README inicial si ya lo tienes local).
-2. Agregar remote:
+**Repositorio del proyecto:** https://github.com/JhonattanMA/DesayunosSorpresas
+
+1. Agregar el remote (si aún no está configurado):
    ```bash
-   git remote add origin https://github.com/USUARIO/regalomagico.git
-   git push -u origin main
-   git push -u origin dev
+   git remote add origin https://github.com/JhonattanMA/DesayunosSorpresas.git
    ```
 
-3. Compartir el enlace del repositorio con el docente.
+2. Subir las ramas:
+   ```bash
+   git push -u origin main
+   git push origin dev
+   git push origin dev-jhonatan-mariaca dev-carolina-nicholls dev-eduar-ruiz-gomez dev-edwin-guzman dev-juliana-chantre-astudillo
+   ```
+
+3. Compartir el enlace con el docente: https://github.com/JhonattanMA/DesayunosSorpresas

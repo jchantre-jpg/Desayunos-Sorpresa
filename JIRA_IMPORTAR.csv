@@ -1,0 +1,26 @@
+Summary,Description,Issue Type,Priority,Labels,Assignee
+Tienda virtual RegaloMágico,"Proyecto Electiva 5. Tienda web donde los usuarios exploran productos, agregan al carrito y envían pedidos por WhatsApp. Sin pasarela de pagos. Stack: HTML5, CSS3, JavaScript. Repo: https://github.com/JhonattanMA/DesayunosSorpresas",Epic,High,"electiva5,regalomagico",
+Como usuario quiero ver categorías para encontrar regalos por tipo,"AC: Categorías visibles; clic filtra productos; iconos por categoría.",Story,High,"frontend,catalogo",Eduar Ruiz Gomez
+Como usuario quiero filtrar productos por categoría,"AC: Botones por categoría; grid filtra; botón Todos; activo destacado.",Story,High,"frontend,catalogo",Juliana Chantre Astudillo
+Como usuario quiero agregar productos al carrito,"AC: Botón Agregar; contador actualiza; mismo producto incrementa cantidad.",Story,High,"frontend,carrito",Edwin Guzman
+Como usuario quiero modificar cantidad y eliminar del carrito,"AC: Botones +/-; Eliminar; total se recalcula; mensaje carrito vacío.",Story,High,"frontend,carrito",Edwin Guzman
+Como usuario quiero ver detalle de producto antes de agregar,"AC: Modal con nombre, precio, descripción; botón agregar; cerrar con X o Escape.",Story,Medium,"frontend,catalogo",Juliana Chantre Astudillo
+Como usuario quiero enviar mi pedido por WhatsApp,"AC: Botón abre wa.me; mensaje con productos y total; enlace configurable.",Story,High,"frontend,whatsapp",Edwin Guzman
+Como usuario quiero interfaz responsive en móvil,"AC: Menú hamburguesa; grid adaptable; carrito usable en móvil.",Story,High,"frontend,responsive",Juliana Chantre Astudillo
+Como usuario quiero diseño atractivo y moderno,"AC: Paleta consistente; tipografía legible; espaciado y jerarquía claros.",Story,Medium,"frontend,diseño",Juliana Chantre Astudillo
+Como administrador quiero gestionar productos desde panel,"AC: Login; CRUD productos; subir fotos; Firebase opcional.",Story,Low,"admin,firebase",
+Estructura HTML base semántica,"Secciones: header, hero, categorías, productos, footer, carrito, modal.",Task,High,"estructura",Eduar Ruiz Gomez
+Header con logo menú y carrito,"Logo, nav, botón carrito con contador, menú hamburguesa móvil.",Task,High,"estructura",Eduar Ruiz Gomez
+Hero section título subtítulo CTA,"Título, subtítulo, botón Explorar regalos.",Task,High,"estructura",Eduar Ruiz Gomez
+Carrito lateral sidebar,"Lista productos, total, +/-, Eliminar, Pedir por WhatsApp.",Task,High,"carrito",Edwin Guzman
+Lógica carrito JS y localStorage,"add, remove, updateQty, persistencia localStorage.",Task,High,"carrito",Edwin Guzman
+Integración WhatsApp mensaje wa.me,"buildWhatsAppUrl, botón flotante, en carrito y contacto.",Task,High,"whatsapp",Edwin Guzman
+Grid productos renderizado dinámico,"Tarjetas desde products.js, imagen/emoji fallback.",Task,High,"catalogo",Juliana Chantre Astudillo
+Filtros por categoría,"Botones filtro, filterProducts(), sincronizar con categorías.",Task,High,"catalogo",Juliana Chantre Astudillo
+Modal detalle producto,"Overlay, contenido, agregar, cerrar X/Escape.",Task,Medium,"catalogo",Juliana Chantre Astudillo
+Estilos CSS variables layout tipografía,"Variables, tema oscuro dorado, Cormorant Montserrat.",Task,High,"estilos",Juliana Chantre Astudillo
+Diseño responsive móvil tablet desktop,"Media queries, hamburguesa, grid adaptable.",Task,High,"responsive",Juliana Chantre Astudillo
+Revisión PRs y estándares código,"Revisar PRs a dev, convención commits, conflictos.",Task,High,"lider",Jhonatan Mariaca
+Backlog y criterios aceptación,"Mantener Jira, historias, comunicación docente.",Task,High,"po",Carolina Nicholls
+Configuración Firebase y panel admin,"Firestore, Storage, admin.html, CRUD productos.",Task,Low,"admin",
+Pruebas funcionales y documentación,"Flujo completo, móvil/desktop, README, CONFIGURACION.md.",Task,High,"qa",Juliana Chantre Astudillo
