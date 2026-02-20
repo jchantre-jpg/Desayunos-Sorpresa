@@ -3,106 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Asistencia - Electiva 5</title>
+  <meta name="description" content="Tienda virtual de regalos - Compra por WhatsApp sin pasarela de pagos">
+  <title>RegaloMágico 🎁 | Tienda de Regalos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="app-container">
-    <header class="header">
-      <div class="header-content">
-        <h1>Registro de Asistencia</h1>
-        <p class="subtitle">Electiva 5 - Control de Asistencia</p>
-      </div>
-    </header>
+  <!-- Floating WhatsApp Button -->
+  <a href="#" id="whatsapp-float" class="whatsapp-float" aria-label="Contactar por WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.164 0 0 7.164 0 16c0 2.82.738 5.5 2.028 7.825L.472 30.852l7.225-1.898A15.9 15.9 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.333a13.26 13.26 0 01-7.062-2.02l-.507-.3-5.26 1.383 1.408-5.128-.332-.526A13.214 13.214 0 012.667 16c0-7.364 5.97-13.333 13.333-13.333S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.272-9.88c-.393-.198-2.322-1.146-2.682-1.275-.36-.13-.622-.198-.884.198-.261.396-1.016 1.275-1.245 1.537-.23.261-.46.295-.853.098-.393-.198-1.659-.612-3.16-1.95-1.169-1.041-1.957-2.327-2.186-2.723-.23-.396-.025-.61.173-.806.177-.177.393-.46.59-.69.197-.23.262-.393.393-.655.131-.262.066-.492-.033-.69-.098-.197-.884-2.13-1.212-2.916-.319-.765-.643-.66-.884-.673l-.754-.015a1.445 1.445 0 00-1.048.492c-.36.393-1.376 1.345-1.376 3.282 0 1.937 1.412 3.807 1.608 4.07.197.262 2.776 4.237 6.727 5.837.94.38 1.674.607 2.245.777.94.279 1.798.239 2.475.145.758-.104 2.322-.949 2.648-1.866.327-.918.327-1.705.23-1.866-.098-.162-.36-.262-.753-.46z"/></svg>
+    <span>Pedir por WhatsApp</span>
+  </a>
 
-    <main class="main-content">
-      <section class="controls">
-        <div class="control-group">
-          <label for="fecha">Fecha</label>
-          <input type="date" id="fecha" required>
-        </div>
-        <div class="control-group">
-          <label for="clase">Clase / Sesión</label>
-          <input type="text" id="clase" placeholder="Ej: Sesión 1 - Introducción">
-        </div>
-        <div class="control-group">
-          <label for="buscar">Buscar estudiante</label>
-          <input type="text" id="buscar" placeholder="Nombre o documento...">
-        </div>
-      </section>
-
-      <section class="acciones">
-        <button type="button" id="btn-guardar" class="btn btn-primary">Guardar Asistencia</button>
-        <button type="button" id="btn-exportar" class="btn btn-secondary">Exportar CSV</button>
-        <button type="button" id="btn-agregar" class="btn btn-success">+ Agregar Estudiante</button>
-        <button type="button" id="btn-estadisticas" class="btn btn-info">Ver Estadísticas</button>
-      </section>
-
-      <section class="estudiantes">
-        <h2>Lista de Estudiantes</h2>
-        <div class="tabla-container">
-          <table class="tabla-asistencia">
-            <thead>
-              <tr>
-                <th>Documento</th>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Asistencia</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tabla-body">
-              <!-- Se llena dinámicamente -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <p>Registro de Asistencia - Electiva 5 &copy; 2025</p>
-    </footer>
-  </div>
-
-  <!-- Modal Agregar/Editar Estudiante -->
-  <div id="modal-estudiante" class="modal">
-    <div class="modal-content">
-      <span class="modal-close">&times;</span>
-      <h2 id="modal-titulo">Agregar Estudiante</h2>
-      <form id="form-estudiante">
-        <input type="hidden" id="estudiante-id">
-        <div class="form-group">
-          <label for="documento">Documento</label>
-          <input type="text" id="documento" required placeholder="Cédula o ID">
-        </div>
-        <div class="form-group">
-          <label for="nombre">Nombre completo</label>
-          <input type="text" id="nombre" required placeholder="Nombre y apellidos">
-        </div>
-        <div class="form-group">
-          <label for="correo">Correo electrónico</label>
-          <input type="email" id="correo" placeholder="correo@ejemplo.com">
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Estadísticas -->
-  <div id="modal-estadisticas" class="modal">
-    <div class="modal-content">
-      <span class="modal-close">&times;</span>
-      <h2>Estadísticas de Asistencia</h2>
-      <div id="estadisticas-contenido" class="estadisticas-grid">
-        <!-- Se llena dinámicamente -->
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">🎁</span>
+        <span class="logo-text">RegaloMágico</span>
+      </a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#categorias">Categorías</a></li>
+          <li><a href="#productos">Productos</a></li>
+          <li><a href="#como-funciona">¿Cómo funciona?</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-btn" id="cart-btn" aria-label="Ver carrito">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg">
+      <div class="hero-gradient"></div>
+      <div class="hero-pattern"></div>
+      <div class="hero-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">Encuentra el regalo perfecto</h1>
+      <p class="hero-subtitle">Selecciona, personaliza y compra por WhatsApp. Sin pasarelas de pago, rápido y seguro.</p>
+      <a href="#productos" class="btn btn-primary">Explorar regalos</a>
+    </div>
+  </section>
+
+  <!-- Categorías -->
+  <section class="section categories" id="categorias">
+    <div class="container">
+      <h2 class="section-title">Categorías</h2>
+      <div class="categories-grid" id="categories-grid">
+        <!-- JS populated -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos -->
+  <section class="section products" id="productos">
+    <div class="container">
+      <h2 class="section-title">Productos destacados</h2>
+      <div class="products-filter" id="products-filter">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <!-- JS populated -->
+      </div>
+      <div class="products-grid" id="products-grid">
+        <!-- JS populated -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Cómo funciona -->
+  <section class="section how-it-works" id="como-funciona">
+    <div class="container">
+      <h2 class="section-title">¿Cómo comprar?</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Elige tu regalo</h3>
+          <p>Explora nuestro catálogo y añade los productos que te gusten al carrito.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Revisa tu pedido</h3>
+          <p>Revisa los productos seleccionados y añade datos de envío si aplica.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Pedir por WhatsApp</h3>
+          <p>Envía tu pedido por WhatsApp. Te confirmaremos disponibilidad y forma de pago.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="section contact" id="contacto">
+    <div class="container">
+      <h2 class="section-title">Contacto</h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <p><strong>¿Dudas? ¿Productos personalizados?</strong></p>
+          <p>Escríbenos por WhatsApp, estamos para ayudarte.</p>
+          <a href="#" class="btn btn-whatsapp" id="contact-whatsapp">
+            <svg viewBox="0 0 32 32" width="24" height="24"><path fill="currentColor" d="M16 0C7.164 0 0 7.164 0 16c0 2.82.738 5.5 2.028 7.825L.472 30.852l7.225-1.898A15.9 15.9 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0z"/></svg>
+            Chatear por WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="logo-icon">🎁</span> RegaloMágico
+        </div>
+        <p class="footer-text">Tienda virtual de regalos • Compra por WhatsApp</p>
+        <p class="footer-copy">© 2025 RegaloMágico. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h2>Tu carrito</h2>
+      <button class="cart-close" id="cart-close" aria-label="Cerrar carrito">&times;</button>
+    </div>
+    <div class="cart-body">
+      <div class="cart-empty" id="cart-empty">
+        <span class="cart-empty-icon">🛒</span>
+        <p>Tu carrito está vacío</p>
+        <a href="#productos" class="btn btn-outline">Ver productos</a>
+      </div>
+      <div class="cart-items" id="cart-items"></div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none">
+      <div class="cart-total">
+        <span>Total:</span>
+        <strong id="cart-total">$0</strong>
+      </div>
+      <button class="btn btn-whatsapp btn-block" id="checkout-whatsapp">
+        <svg viewBox="0 0 32 32" width="20" height="20"><path fill="currentColor" d="M16 0C7.164 0 0 7.164 0 16c0 2.82.738 5.5 2.028 7.825L.472 30.852l7.225-1.898A15.9 15.9 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0z"/></svg>
+        Pedir por WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="product-modal-overlay"></div>
+  <div class="modal" id="product-modal">
+    <button class="modal-close" id="modal-close">&times;</button>
+    <div class="modal-content" id="modal-content"></div>
   </div>
 
-  <script src="js/db.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

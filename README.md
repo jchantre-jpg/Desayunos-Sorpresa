@@ -1,14 +1,21 @@
-# Registro de Asistencia - Electiva 5
+# RegaloMágico 🎁
 
-Página web para el registro de asistencia de estudiantes. Desarrollada con HTML, CSS, JavaScript e IndexedDB.
+**Tienda virtual de regalos con compras por WhatsApp** (sin pasarela de pagos)
 
-## Stack Tecnológico
+---
 
-- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-- **Base de datos:** IndexedDB (persistencia local en el navegador)
+## Descripción
+
+Proyecto desarrollado para la Electiva 5. Tienda web elegante donde los usuarios exploran productos, agregan al carrito y envían su pedido directamente por WhatsApp. Sin integración de pasarelas de pago: el cobro y la coordinación se manejan por mensajería.
+
+## Stack tecnológico
+
+- **Frontend:** HTML5, CSS3, JavaScript (vanilla)
+- **Fuentes:** Google Fonts (Cormorant Garamond, Montserrat)
 - **Control de versiones:** Git + GitHub
+- **Gestión de proyecto:** Jira, Notion
 
-## Estructura del Proyecto
+## Estructura del proyecto
 
 ```
 electiva 5/
@@ -16,80 +23,33 @@ electiva 5/
 ├── css/
 │   └── styles.css      # Estilos
 ├── js/
-│   ├── db.js           # Lógica de IndexedDB
-│   └── app.js          # Lógica de la aplicación
-├── docs/               # Documentación para Notion/Jira
-│   ├── ROLES.md
-│   ├── BACKLOG.md
-│   ├── STACK.md
-│   └── SPRINT-PLANNING.md
-├── .gitignore
-└── README.md
+│   ├── products.js     # Catálogo y configuración WhatsApp
+│   ├── cart.js         # Lógica del carrito
+│   └── main.js         # Inicialización y eventos
+├── assets/
+│   └── images/         # Imágenes (opcional)
+├── README.md
+├── GIT_WORKFLOW.md     # Guía de ramas y flujo
+└── NOTION_DOCUMENTACION.md  # Plantilla para Notion
 ```
 
-## Estrategia de Ramas (Git)
+## Configuración
 
-- **main** – Rama principal (producción). Solo recibe merges después de pruebas.
-- **dev** – Rama de desarrollo. Integra los cambios de los integrantes.
-- **dev-nombre-apellido** – Una rama por cada integrante (ej: dev-maria-garcia).
+1. **Número de WhatsApp:** Edita `js/products.js` y cambia `CONFIG.whatsappNumber` por tu número (código país + número, sin + ni espacios). Ejemplo: `573001234567` para Colombia.
 
-### Flujo de trabajo
+2. **Productos:** Modifica el array `PRODUCTOS` en `js/products.js` para añadir o editar artículos.
 
-1. Cada integrante trabaja en su rama: `dev-nombre-apellido`
-2. Crear **Pull Request** hacia `dev` con los cambios
-3. Revisión y merge a `dev`
-4. Pruebas en `dev`
-5. Crear **Pull Request** de `dev` hacia `main`
-6. Merge a `main` tras aprobación
+## Uso
 
-### Comandos básicos
+1. Abre `index.html` en el navegador.
+2. Navega por categorías y productos.
+3. Agrega artículos al carrito.
+4. Haz clic en "Pedir por WhatsApp" para enviar el pedido vía WhatsApp.
 
-```bash
-# Clonar e iniciar
-git clone <url-repositorio>
-cd "electiva 5"
+## Equipo y ramas
 
-# Crear tu rama (reemplaza con tu nombre)
-git checkout -b dev-tu-nombre-tu-apellido
+Cada integrante trabaja en su rama `dev-nombre-apellido` y envía Pull Request primero a `dev`, luego (tras pruebas) a `main`. Ver `GIT_WORKFLOW.md`.
 
-# Trabajar y subir
-git add .
-git commit -m "Descripción del cambio"
-git push origin dev-tu-nombre-tu-apellido
+---
 
-# Sincronizar con dev
-git fetch origin dev
-git merge origin/dev
-```
-
-## Ramas disponibles
-
-Para crear las 9 ramas del equipo:
-
-```bash
-git checkout -b dev
-git checkout main
-git branch dev-integrante-1
-git branch dev-integrante-2
-git branch dev-integrante-3
-git branch dev-integrante-4
-git branch dev-integrante-5
-git branch dev-integrante-6
-git branch dev-integrante-7
-git push origin dev dev-integrante-1 dev-integrante-2 dev-integrante-3 dev-integrante-4 dev-integrante-5 dev-integrante-6 dev-integrante-7
-```
-
-*(Renombra las ramas con los nombres reales: dev-maria-garcia, dev-juan-lopez, etc.)*
-
-## Cómo ejecutar
-
-1. Abre `index.html` en un navegador.
-2. O usa un servidor local (ej. Live Server en VS Code).
-
-## Funcionalidades
-
-- Registrar estudiantes (documento, nombre, correo)
-- Marcar asistencia (presente/ausente) por fecha
-- Buscar estudiantes
-- Exportar asistencia a CSV
-- Ver estadísticas de asistencia
+© 2025 RegaloMágico - Electiva 5
