@@ -1,18 +1,28 @@
-# Dependencias
-node_modules/
-
-# Logs y temporales
-*.log
-*.tmp
+# OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# IDE
-.idea/
+# IDEs
 .vscode/
+.idea/
 *.swp
 *.swo
 
-# Variables de entorno (si se añade backend)
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+
+# Build
+dist/
+build/
+*.min.js
+*.min.css
+
+# Env
 .env
 .env.local
+.env.*.local
