@@ -82,7 +82,8 @@ const Cart = {
 
     if (items) {
       items.innerHTML = this.items.map(item => {
-        const img = item.fotos && item.fotos[0] ? `<img src="${item.fotos[0]}" alt="${item.nombre}">` : (item.emoji || '🎁');
+        const imgSrc = item.fotos && item.fotos[0] ? encodeURI(item.fotos[0]) : '';
+        const img = imgSrc ? `<img src="${imgSrc}" alt="${(item.nombre || '').replace(/"/g, '&quot;')}">` : (item.emoji || '🎁');
         return `
         <div class="cart-item" data-id="${item.id}">
           <div class="cart-item-image">${img}</div>

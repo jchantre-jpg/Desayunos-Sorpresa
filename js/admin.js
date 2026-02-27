@@ -60,12 +60,14 @@ function showAdminPanel() {
 
 async function initAdmin() {
   const ok = initFirebase();
-  if (!ok || !USE_FIREBASE) {
+  const useLocal = !USE_FIREBASE || !ok;
+  if (useLocal) {
+    document.getElementById('firebase-notice').innerHTML = '<strong>Modo local:</strong> Los productos se guardan en tu navegador. Ideal para probar. Para producción, configura Firebase en <code>FIREBASE_SETUP.md</code>.';
     document.getElementById('firebase-notice').style.display = 'block';
-    document.getElementById('btn-new-product').style.display = 'none';
-    document.getElementById('products-list').innerHTML = '<div class="empty-state"><p>Configura Firebase en <code>js/firebase-config.js</code> para gestionar productos desde aquí.</p><p><a href="index.html">Ver tienda con productos de ejemplo</a></p></div>';
-    bindEvents();
-    return;
+    document.getElementById('btn-new-product').style.display = 'inline-block';
+  } else {
+    document.getElementById('firebase-notice').style.display = 'none';
+    document.getElementById('btn-new-product').style.display = 'inline-block';
   }
   await loadProducts();
   bindEvents();
@@ -89,7 +91,7 @@ async function loadProducts() {
 function renderProductCard(p) {
   const fotos = p.fotos && p.fotos.length > 0 ? p.fotos : [];
   const imgContent = fotos[0]
-    ? `<img src="${fotos[0]}" alt="${p.nombre}">`
+    ? `<img src="${encodeURI(fotos[0])}" alt="${(p.nombre || '').replace(/"/g, '&quot;')}">`
     : `<span class="placeholder">${CATEGORIAS.find(c => c.id === p.categoria)?.icono || '🎁'}</span>`;
   return `
     <div class="admin-product-card" data-id="${p.id}">
