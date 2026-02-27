@@ -17,14 +17,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadProducts() {
-  if (typeof USE_FIREBASE !== 'undefined' && USE_FIREBASE && initFirebase()) {
-    try {
-      PRODUCTOS_ACTUAL = await getProducts();
-    } catch (e) {
-      console.warn('Error cargando desde Firebase, usando productos estáticos:', e);
-      PRODUCTOS_ACTUAL = PRODUCTOS.map((p, i) => ({ ...p, id: p.id || i + 1 }));
+  try {
+    initFirebase();
+    let list = await getProducts();
+    if (!list || list.length === 0) {
+      list = PRODUCTOS.map((p, i) => ({ ...p, id: p.id || i + 1 }));
     }
-  } else {
+    PRODUCTOS_ACTUAL = list;
+  } catch (e) {
+    console.warn('Error cargando productos:', e);
     PRODUCTOS_ACTUAL = PRODUCTOS.map((p, i) => ({ ...p, id: p.id || i + 1 }));
   }
   renderProducts();
@@ -78,7 +79,8 @@ function renderProducts(filter = 'todos') {
   const getProductImg = (p) => {
     const fallback = (p.emoji || '🎁').replace(/"/g, '&quot;');
     if (p.fotos && p.fotos.length > 0) {
-      return `<img src="${p.fotos[0]}" alt="${p.nombre}" data-fallback="${fallback}" onerror="this.outerHTML='<span class=img-fallback>'+this.dataset.fallback+'</span>'">`;
+      const src = encodeURI(p.fotos[0]);
+      return `<img src="${src}" alt="${(p.nombre || '').replace(/"/g, '&quot;')}" data-fallback="${fallback}" onerror="this.outerHTML='<span class=img-fallback>'+this.dataset.fallback+'</span>'">`;
     }
     return fallback;
   };
@@ -147,8 +149,9 @@ function openProductModal(id) {
   const modal = document.getElementById('product-modal');
   const overlay = document.getElementById('product-modal-overlay');
 
+  const imgSrc = p.fotos && p.fotos.length > 0 ? encodeURI(p.fotos[0]) : '';
   const imgContent = p.fotos && p.fotos.length > 0
-    ? `<div class="modal-gallery"><img src="${p.fotos[0]}" alt="${p.nombre}">${p.fotos.length > 1 ? `<span class="gallery-count">+${p.fotos.length - 1}</span>` : ''}</div>`
+    ? `<div class="modal-gallery"><img src="${imgSrc}" alt="${(p.nombre || '').replace(/"/g, '&quot;')}">${p.fotos.length > 1 ? `<span class="gallery-count">+${p.fotos.length - 1}</span>` : ''}</div>`
     : `<div class="modal-product-image">${p.emoji || '🎁'}</div>`;
 
   const fullDesc = [p.contenido, p.descripcion].filter(Boolean).join('\n\n');
@@ -178,30 +181,32 @@ function openProductModal(id) {
   modal?.classList.add('active');
 }
 
-// WhatsApp
+// WhatsApp: arma el mensaje con los productos elegidos y el enlace al admin
 function buildWhatsAppUrl(items, isOrder = false) {
   const link = CONFIG.whatsappLink || '';
   const num = (CONFIG.whatsappNumber || '').replace(/\D/g, '');
 
   let text = '';
   if (items && items.length > 0) {
-    text = CONFIG.orderMessage + '\n\n*Mi pedido:*\n';
+    text = CONFIG.orderMessage + '\n\n*Productos que seleccioné:*\n';
     items.forEach(i => {
-      text += `• ${i.nombre} x${i.quantity} - $${(i.precio * i.quantity).toLocaleString('es-CO')}\n`;
+      text += `• ${i.nombre} x${i.quantity} — $${(i.precio * i.quantity).toLocaleString('es-CO')}\n`;
     });
     text += `\n*Total: $${Cart.getTotal().toLocaleString('es-CO')}*`;
   } else {
     text = '¡Hola! Me gustaría información sobre los productos de RegaloMágico.';
   }
 
-  // Si hay número, usar wa.me/numero para mensaje pre-llenado
+  const encodedText = encodeURIComponent(text);
+
+  // Con número: abre WhatsApp directo al chat del admin con el mensaje ya puesto
   if (num) {
-    return `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/${num}?text=${encodedText}`;
   }
-  // Si hay link (ej. wa.me/qr/...), intentar añadir el mensaje como parámetro
+  // Sin número: usa el link (qr); el mensaje a veces no se pre-llena
   if (link) {
     const sep = link.includes('?') ? '&' : '?';
-    return `${link}${sep}text=${encodeURIComponent(text)}`;
+    return `${link}${sep}text=${encodedText}`;
   }
   return 'https://wa.me/';
 }
