@@ -1,0 +1,52 @@
+version: "3.9"
+
+# Equipo 1 - Juliana Chantre Astudillo
+# Puertos del host terminan en 1 (3001, 8081, 54321)
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend-equipo1
+    ports:
+      - "3001:80"   # Host 3001 -> contenedor 80 (Nginx)
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:8081
+    networks:
+      - red-equipo1
+
+  backend:
+    build: ./backend
+    container_name: backend-equipo1
+    ports:
+      - "8081:8080"   # Host 8081 -> contenedor 8080
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=equipo1
+      - DB_PASSWORD=equipo1pass
+      - DB_NAME=regalomagico1
+    networks:
+      - red-equipo1
+
+  db:
+    image: postgres:16
+    container_name: db-equipo1
+    ports:
+      - "54321:5432"  # Host 54321 -> contenedor 5432
+    environment:
+      - POSTGRES_USER=equipo1
+      - POSTGRES_PASSWORD=equipo1pass
+      - POSTGRES_DB=regalomagico1
+    volumes:
+      - ./bd/data:/var/lib/postgresql/data
+      - ./bd/base_datos.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    networks:
+      - red-equipo1
+
+networks:
+  red-equipo1:
+    driver: bridge
