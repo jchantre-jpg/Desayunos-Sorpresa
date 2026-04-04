@@ -16,6 +16,10 @@ Proyecto separado en **frontend**, **backend** y **bd** para subir al repo Apolo
 - Backend:  **8081**
 - Base de datos: **54321**
 
+## CI/CD
+
+Deploy automático a VPS con **GitHub Actions** al hacer `push` a `main` (workflow: Deploy VPS Equipo 1).
+
 ## Cómo usar
 
 - **Solo frontend (local):** Entra en `frontend/` y ejecuta `iniciar-tienda.ps1` o abre `index.html`.
