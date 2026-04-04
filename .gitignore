@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Environment (nunca subir contraseñas)
+.env
+.env.local
+.env.*.local
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs y temporales
+*.log
+npm-debug.log*
+*.tmp
+*.temp
+.cache/
+
+# Build
+dist/
+build/
+*.min.js
+*.min.css
+
+# Base de datos (datos locales, no el script .sql)
+bd/data/
+
+# Carpetas locales de otro curso / no son parte de Desayunos-Sorpresa
+electiva 5/
+estructura de datos/
+Desayunos-Sorpresa-ci/

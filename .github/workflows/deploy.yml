@@ -1,0 +1,33 @@
+name: Deploy VPS Equipo 1
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy VPS Equipo 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ejecutar comandos SSH en VPS
+        uses: appleboy/ssh-action@v1.2.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          timeout: 2m
+          command_timeout: 45m
+          script: |
+            set -eu
+            cd ${{ secrets.WORK_DIR }}
+            git config --global --add safe.directory "$(pwd)" 2>/dev/null || true
+            git fetch origin
+            git checkout main
+            git reset --hard origin/main
+            docker compose down --remove-orphans 2>/dev/null || true
+            docker rm -f db-equipo1 backend-equipo1 frontend-equipo1 2>/dev/null || true
+            docker compose build
+            docker compose up -d
